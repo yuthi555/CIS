@@ -34,5 +34,19 @@
       username: admin
     with_items:
         - "{{ serverinventory }}"
-#    register: new_change_request
-#- debug: var=new_change_request.record.number
+  - debug:
+      msg: "New change has been created : {{ new_change.record.number }} "
+  - name: test change
+    snow_record:
+      username: admin
+      password: Swiftdzire@0587
+      instance: dev57831
+      state: present
+      table: change_task
+      data:
+        short_description: "This is the task ticket from ansible"
+        description: '2021| NON PROD Q3 Linux Patching QA'
+        change_request: "{{ new_change.record.number }}"
+    register: new_change_task
+  - debug:
+      msg: "New change has been created : {{ new_change_task.record.number }} "
